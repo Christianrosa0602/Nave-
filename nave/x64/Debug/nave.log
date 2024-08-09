@@ -1,2 +1,10 @@
 ﻿  nave.cpp
+C:\Users\chris\Desktop\nave\nave\nave.cpp(129,28): warning C4099: 'NAVE': nombre de tipo visto anteriormente usando 'class' ahora se ve usando 'struct'
+  C:\Users\chris\Desktop\nave\nave\nave.cpp(47,7):
+  vea la declaración de 'NAVE'
+  
+C:\Users\chris\Desktop\nave\nave\nave.cpp(146,25): warning C4099: 'NAVE': nombre de tipo visto anteriormente usando 'class' ahora se ve usando 'struct'
+  C:\Users\chris\Desktop\nave\nave\nave.cpp(47,7):
+  vea la declaración de 'NAVE'
+  
   nave.vcxproj -> C:\Users\chris\Desktop\nave\x64\Debug\nave.exe

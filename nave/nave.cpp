@@ -49,7 +49,10 @@ class NAVE {
     int corazones;
     int vidas;
 public:
-    NAVE(int _x, int _y,int _corazones, int _vidas) : x(_x), y(_y), corazones(_corazones), vidas(_vidas) {};
+    NAVE(int _x, int _y, int _corazones, int _vidas) : x(_x), y(_y), corazones(_corazones), vidas(_vidas) {};
+    int X() { return x; }
+    int Y() { return y; }
+    void COR() { corazones--; }
     void pintar();
     void borrar();
     void mover();
@@ -123,6 +126,7 @@ class AST {
         AST(int _x, int _y):x(_x),y(_y){}
         void pintar();
         void mover();
+        void choque(struct NAVE &N);
 };
 
 void AST::pintar() {
@@ -139,6 +143,17 @@ void AST::mover() {
     pintar();
 }
 
+void AST::choque(struct NAVE &N) {
+    if (x >= N.X() && x < N.X()+5 && y >= N.Y() && y <= N.Y()+2) {
+        N.COR();
+        N.borrar();
+        N.pintar();
+        N.pintar_corazones();
+        x = rand() % 113 + 4;
+        y = 4;
+    }
+}
+
 int main() {
     OcultarCursor();
     pintar_limites();
@@ -146,11 +161,14 @@ int main() {
     N.pintar();
     N.pintar_corazones();
 
-    AST ast(10, 4);
+    AST ast1(10, 4), ast2(4,8), ast3(15,10);
 
     bool game_over = false;
     while (!game_over) {
-        ast.mover();
+        ast1.mover(); ast1.choque(N);
+        ast2.mover(); ast2.choque(N);
+        ast3.mover(); ast3.choque(N);
+
         N.morir();
         N.mover();
         Sleep(30);

@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <Windows.h>
 #include <conio.h>
+#include <stdlib.h>
 
 #define ARRIBA 72
 #define IZQUIERDA 75
@@ -46,12 +47,14 @@ void pintar_limites() {
 class NAVE {
     int x, y;
     int corazones;
+    int vidas;
 public:
-    NAVE(int _x, int _y,int _corazones) : x(_x), y(_y), corazones(_corazones) {};
+    NAVE(int _x, int _y,int _corazones, int _vidas) : x(_x), y(_y), corazones(_corazones), vidas(_vidas) {};
     void pintar();
     void borrar();
     void mover();
     void pintar_corazones();
+    void morir();
 };
 
 void NAVE::pintar() {
@@ -61,9 +64,9 @@ void NAVE::pintar() {
 }
 
 void NAVE::borrar() {
-    gotoxy(x, y);   printf("         ");
-    gotoxy(x, y + 1); printf("         ");
-    gotoxy(x, y + 2); printf("         ");
+    gotoxy(x, y);     printf("       ");
+    gotoxy(x, y + 1); printf("       ");
+    gotoxy(x, y + 2); printf("       ");
 }
 
 void NAVE::mover() {
@@ -82,22 +85,73 @@ void NAVE::mover() {
 } 
 
 void NAVE::pintar_corazones(){
-    gotoxy(82,2); printf("Salud");
+
+    gotoxy(65, 2); printf("Vidas %d", vidas);
+    gotoxy(93,2); printf("Salud");
     gotoxy(100, 2); printf("                 ");
     for (int i = 0; i < corazones; i++) {
         gotoxy(100 + i * 3, 2); printf("<3");
     }
 }
 
+void NAVE::morir() {
+    if (corazones == 0) {
+        borrar();
+        gotoxy(x, y);   printf("  *  ");
+        gotoxy(x, y+1); printf(" *** ");
+        gotoxy(x, y+2); printf("*****");
+        Sleep(200);
+
+        borrar();
+        gotoxy(x, y);     printf("* * *");
+        gotoxy(x, y + 1); printf(" ***");
+        gotoxy(x, y + 2); printf("* * *");
+        Sleep(200);
+        borrar();
+
+        vidas--;
+        corazones = 3;
+        pintar_corazones();
+        pintar();
+    }
+}
+
+class AST {
+    int x, y;
+
+    public:
+        AST(int _x, int _y):x(_x),y(_y){}
+        void pintar();
+        void mover();
+};
+
+void AST::pintar() {
+    gotoxy(x, y); printf("%c", 184);
+}
+
+void AST::mover() {
+    gotoxy(x, y); printf(" ");
+    y++;
+    if (y > 27) {
+        x = rand() % 113 + 4;
+        y = 4;
+    }
+    pintar();
+}
+
 int main() {
     OcultarCursor();
     pintar_limites();
-    NAVE N(7, 7, 3);
+    NAVE N(7, 7, 3, 3);
     N.pintar();
     N.pintar_corazones();
 
+    AST ast(10, 4);
+
     bool game_over = false;
     while (!game_over) {
+        ast.mover();
+        N.morir();
         N.mover();
         Sleep(30);
     }
